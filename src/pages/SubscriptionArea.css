@@ -1,0 +1,63 @@
+/* subscription-area.css */
+
+.subscription-area-container {
+    background-color: #f8f8f8;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+    width: 80%;
+    margin: 0 auto;
+    margin-top: 50px;
+    text-align: center;
+}
+
+.subscription-area-title {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+}
+
+.subscription-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.subscription-item {
+    margin-bottom: 20px;
+}
+
+.subscription-card {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.subscription-card:hover {
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.subscription-title {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
+
+.subscription-info {
+    font-size: 1rem;
+    color: #555;
+}
+
+.remove-button {
+    padding: 8px 16px;
+    font-size: 1rem;
+    background-color: #dc3545; /* Red color */
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.remove-button:hover {
+    background-color: #c82333; /* Darker red color on hover */
+}

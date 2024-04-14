@@ -1,0 +1,77 @@
+.main-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+.user-area {
+    margin-bottom: 20px;
+    font-size: 18px;
+}
+
+.logout-link {
+    margin-top: 20px;
+    text-decoration: none;
+    color: blue;
+}
+
+.logout-link:hover {
+    text-decoration: underline;
+}
+
+.content-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.subscription-area {
+    flex: 1;
+    margin-right: 20px;
+}
+
+.query-area {
+    flex: 1;
+    margin-left: 20px;
+}
+
+.subscription-list {
+    list-style: none;
+    padding: 0;
+}
+
+.subscription-item {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.subscription-item img {
+    max-width: 100px;
+    max-height: 100px;
+    margin-top: 10px;
+}
+
+.query-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.query-input {
+    margin-bottom: 10px;
+}
+
+.query-button {
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.query-button:hover {
+    background-color: #0056b3;
+}
