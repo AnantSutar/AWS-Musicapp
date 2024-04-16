@@ -5,7 +5,7 @@ import './QueryArea.css'; // Import CSS file for styling
 import queryMusicInfo from "../aws/getmusicdata";
 import { addUserMusic } from "../aws/createtable";
 
-const QueryArea = ({ email }) => {
+const QueryArea = ({ email, onSubscribe }) => {
     const [title, setTitle] = useState('');
     const [year, setYear] = useState('');
     const [artist, setArtist] = useState('');
@@ -29,6 +29,7 @@ const QueryArea = ({ email }) => {
         setQueryResult(items);
         setQueried(true);
         console.log(queryResult)
+
     };
 
     const handleSubscribe = (music) => {
@@ -36,9 +37,12 @@ const QueryArea = ({ email }) => {
         // You may need to get the user's email or any other relevant information to add the data
         console.log(email,title)
         if(addUserMusic(email,music.title,music.artist,music.year,music.image)){
-            prompt("Success")
+            alert("Success")
+            onSubscribe();
+            window.location.reload()
         }
     };
+
 
     return (
         <div className="query-area-container">

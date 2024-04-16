@@ -1,32 +1,76 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './login.css';
-import { verifyUserLogin } from '../aws/Repository'; // Import verifyLogin function
 
 const LoginPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
-
+    //
+    // const handleSubmit = async (e) => {
+    //     e.preventDefault();
+    //     try {
+    //         const response = await fetch('https://tdsttoydr1.execute-api.us-east-1.amazonaws.com/loginPage/login', {
+    //             method: 'POST',
+    //             headers: {
+    //                 'Content-Type': 'application/json'
+    //             },
+    //             body: JSON.stringify({
+    //                 email,
+    //                 password
+    //             })
+    //         });
+    //         console.log(response);
+    //         if (response.status === 200 && response.data) {
+    //             console.log('Login successful:', response.data);
+    //             localStorage.setItem('userLoggedIn', JSON.stringify(response.data));
+    //             navigate('/');
+    //             window.location.reload()
+    //         } else {
+    //             alert('Invalid email or password. Please try again.');
+    //         }
+    //
+    //     } catch (error) {
+    //         console.error('Error logging in:', error);
+    //         alert('Failed to log in. Please try again.');
+    //     }
+    // };
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const a = await verifyUserLogin(email, password);
+            const response = await fetch('https://tdsttoydr1.execute-api.us-east-1.amazonaws.com/loginPage/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    email,
+                    password
+                })
+            });
 
-            if (a) {
-                // Redirect to main page on successful login
-                console.log("here")
-                navigate("/main", { state: { a } });
+            const responseData = await response.json();
+            console.log(responseData);
+            if (responseData.statusCode === 200) {
+                const state = JSON.parse(responseData.body);
+
+                navigate("/main", { state: { state } });
+            } else if (responseData.statusCode === 401) {
+                alert('Invalid password');
+            } else {
+                alert('User not found');
             }
-
-        } catch (e) {
-            alert("Wrong")
+        } catch (error) {
+            console.error('Error logging in:', error);
         }
     };
+
+
     const handleRegisterClick = () => {
         // Navigate to the register page
         navigate("/register");
     };
+
     return (
         <div className="login-container">
             <h2>Login</h2>
@@ -55,48 +99,3 @@ const LoginPage = () => {
 };
 
 export default LoginPage;
-
-
-// import React, { useState } from 'react';
-// import { useNavigate } from 'react-router-dom'; // Import useHistory hook
-// import './login.css'; // Import CSS file for styling
-//
-// const LoginPage = () => {
-//     const [username, setUsername] = useState('');
-//     const [password, setPassword] = useState('');
-//     const navigate = useNavigate(); // Get the history object
-//
-//     const handleSubmit = (e) => {
-//         e.preventDefault();
-//         // Here you can add your logic for authentication
-//         // For now, just redirect to the main page
-//         navigate("/main") // Redirect to main page
-//     };
-//
-//     return (
-//         <div className="login-container">
-//             <h2>Login</h2>
-//             <form onSubmit={handleSubmit}>
-//                 <div className="input-group">
-//                     <label>Username</label>
-//                     <input
-//                         type="text"
-//                         value={username}
-//                         onChange={(e) => setUsername(e.target.value)}
-//                     />
-//                 </div>
-//                 <div className="input-group">
-//                     <label>Password</label>
-//                     <input
-//                         type="password"
-//                         value={password}
-//                         onChange={(e) => setPassword(e.target.value)}
-//                     />
-//                 </div>
-//                 <button type="submit">Login</button>
-//             </form>
-//         </div>
-//     );
-// };
-//
-// export default LoginPage;

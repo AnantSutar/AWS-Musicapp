@@ -5,20 +5,21 @@ import { deleteUserMusic, getUserMusicDataByEmail } from "../aws/createtable";
 import queryMusicInfo from "../aws/getmusicdata";
 import './SubscriptionArea.css';
 
-const SubscriptionArea = ({ email }) => {
-    const [subscribedMusic, setSubscribedMusic] = useState([]);
-    const [loading, setLoading] = useState(true);
+const SubscriptionArea = ({ email, smusic }) => {
+    const [subscribedMusic, setSubscribedMusic] = useState(smusic || []);
+    const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
     useEffect(() => {
+        setLoading(true)
         const fetchSubscribedMusic = async () => {
             try {
                 // Get music data directly by email
                 const musicData = await getUserMusicDataByEmail(email);
                 if (musicData.length === 0) {
-                    setSubscribedMusic([]);
+                    setSubscribedMusic(smusic || []);
                     setLoading(false);
-                    return;
+
                 }
                 setSubscribedMusic(musicData);
                 setLoading(false);
@@ -38,7 +39,7 @@ const SubscriptionArea = ({ email }) => {
             setSubscribedMusic(prevMusic => prevMusic.filter(music => music.title !== title));
         } catch (error) {
             console.error('Error removing subscription:', error);
-            // Handle error as needed
+
         }
     };
 
