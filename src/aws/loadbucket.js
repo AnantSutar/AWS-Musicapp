@@ -6,9 +6,9 @@ import jsonData from './a1.json';
 const s3Client = new S3Client({
     region: 'us-east-1',
     credentials: {
-        accessKeyId:'ASIAQ3EGT552RICIQXH7',
-        secretAccessKey:'CLtCptHOem18ynBVOhrLbXZrZ2dWT3wqi39nJOdk',
-        sessionToken: 'IQoJb3JpZ2luX2VjEGQaCXVzLXdlc3QtMiJHMEUCIBgirqkZeowekp8H+O2EAZ90A7vWsaIg/ucIpKWrGVS/AiEA4+QMs6DAKMMJEdV8qH8P3JFAzhR3mQSPyQaC8efeH/gqvwIInf//////////ARAAGgwwNTgyNjQzODMzNDkiDPWXervC6msbh5CYKSqTAgyeH3IU1MjpDWoV8jiwEZ2scWz+dZ/9MSEVHiXqiwOYj/HEAE6pUe3nVL9OUDciA3ukeoiNxuPGYIb+j1bgtFhjZbD2ftsvvWQ4fHrdFoGa5549orD+tNq2i8hns+Z8gftsYJNwAMFz1c+rFCBJ4v+NEGHgchEC208T0gZ+mEQGabKNvXxHcz4p53lWVFXkz/s7vXIPcPaKFrwIdwoSMj8iObZcmJZmaYDhiia8sVktSUvHKhy+4k+fwwNaaBwifD+7JAd7Josjd4FgsR2pvCKsbiU3Bn6gvwONa+pyt3SSTVpIjP+CGGLAXbBWGeRZrp2nQ+qw2Nf9N9Avisrjzx//Z+0PbTDh7TmjjEbEDbiU8fe5MKXD8rAGOp0Bjcniz+0tVeb6J61R0mqKkKYkhiYSrpJG4BbCGVHWpOVTbZ1EjqejdMdCfEvy3KzVxtgUw6wm4AxBHNgqF/afn11qQDBfkjP/LXyipbL/XDl0DRW9fthoiCjoPVcps+ceeVF1oNjQRutjexdNXfCw3e29eEzRNqM5cQSueC2Pue34Ke44ICYvs9ablCZDUoME3pRXPDMntngqJd93kw=='
+        accessKeyId:'ASIAQ3EGT552UCQCUJF2',
+        secretAccessKey:'OwCGlohZrA97ss9NrGxNg0p+fhq4RZO6to3irD6G',
+        sessionToken: 'IQoJb3JpZ2luX2VjEIb//////////wEaCXVzLXdlc3QtMiJHMEUCIQDoY1HO34Q5oBrtcElbZu/U6rPWiH+uqjU4tdaulw+iHQIgK/TRB05ox0l9hT6yNMcMyKHQuJJ5ISnPdB+HvGOu0gAqvwIIv///////////ARAAGgwwNTgyNjQzODMzNDkiDB25Kq6JDztsARMo9iqTAv9mPzaDnwpanFhHZ+dFLHwZZVd1tqmxRPToXlw11Tcr87VDBT8xTrSU6DVK/8u1UldqvTp61+upqsuflWzYNv7+mzW6how55r10NfjRTGdlkiPhnwhnFZ8e2gfSunb2cq9VGj9JuniGhckgn3t6qn9BPP61DDBe5XSYNJeTuEL9glEP+gfNg6S8+L51gkBmp59B5XFb9gpbWvmZ0OFEhnUwGtiOkTF8aZ7nTEKcJrS76wgRrFg6pMew0J/vpq45V1npNDMyFFrk6lXrPU80HDrS9RR87oegeHdnEgYwOlS84797MatKSwKpWfV9oagxDesII8UuB34djr9oCV0zWK7vWJAbCRYKjkdj+1cWDrbdI+7uMMz6+bAGOp0B7LHkUGDCPsAIeZRkouc6dhxUETcbRCrrp2ALvvUG9u1GhtAm2hyeNRsqWI93GRGdQ8RdLzwkpxysjAl78UkycUnWQZ0ALw02axcrMt9g1tu6AlGwhFzDz6NNjXfYKxNvUZNyOwvRodMOsv9Nm0x0LeD/H/zzozmykdva7hCHzd+MMRplNH7Qe0IX1ljBfB8QPNi41ul7rM4yHRTNAQ=='
     }
 });
 
@@ -21,31 +21,34 @@ const ImageUploader = () => {
             setLoading(true);
             setError('');
 
+            let id = 0
             for (const song of jsonData.songs) {
                 try {
-                    const imageResponse = await fetch(song.imageUrl);
+                    const imageResponse = await fetch(song.img_url);
                     if (!imageResponse.ok) {
-                        throw new Error(`Failed to fetch image: ${imageResponse.statusText}`);
+                        throw new Error("Failed to fetch image: ${imageResponse.statusText}");
                     }
                     const blob = await imageResponse.blob();
-                    const fileName = `${song.artist.replace(/ /g, '_')}.jpg`;
+                    // const fileName = `${song.artist.replace(/ /g, '_')}-${song.title.replace(/ /g, '_')}.jpg`;
+                    const fileName = `${song.artist.replace(/ /g, '_')}${id}.jpg`;
+                    id += 1;
                     const params = {
-                        Bucket: 'YOUR_BUCKET_NAME',
-                        Key: fileName,
+                        Bucket: 's3958744artistimg',
+                        Key: `photosOfArtists/${fileName}`,
                         Body: blob,
                         ContentType: 'image/jpeg'
                     };
 
+
                     const command = new PutObjectCommand(params);
                     await s3Client.send(command);
-                    console.log(`Upload successful: ${fileName}`);
+                    console.log("Upload successful: ${fileName}");
                 } catch (err) {
-                    console.error(`Error uploading image ${song.imageUrl}: ${err}`);
-                    setError(`Error uploading image ${song.imageUrl}: ${err.message}`);
-                    break; // Stop uploading on error
+                    console.error("Error uploading image ${song.img_url}:, err");
+                    setError("Error uploading image ${song.img_url}: ${err.message}");
+                    break;
                 }
             }
-
             setLoading(false);
         };
 
